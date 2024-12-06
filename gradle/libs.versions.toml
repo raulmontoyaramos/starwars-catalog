@@ -1,0 +1,47 @@
+[versions]
+activity-compose = "1.9.3"
+androidGradlePlugin = "8.7.2"
+androidx-junit = "1.2.1"
+kspVersion = "2.0.21-1.0.27"
+espressoCore = "3.6.1"
+junit = "4.13.2"
+coroutinesVersion = "1.6.4"
+kotlin = "2.0.21"
+kotlinSerializationVersion = "1.9.0"
+kotlinx-serialization-json = "1.6.3"
+kotlinxCoroutinesAndroid = "1.8.1"
+ktorVersion = "1.5.0"
+ktx = "1.13.1"
+lifecycle-runtime-ktx = "2.8.7"
+navigation-compose = "2.8.2"
+retrofit2-kotlinx-serialization-converter = "1.0.0"
+roomVersion = "2.6.1"
+
+
+
+[libraries]
+activityCompose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
+androidxKtx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
+androidxLifecycleRuntimeKtx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
+espressoCore = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCore" }
+extJunit = { module = "androidx.test.ext:junit", version.ref = "androidx-junit" }
+junit = { module = "junit:junit", version.ref = "junit" }
+kotlinxCoroutinesAndroid = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
+kotlinxCoroutinesCore = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutinesVersion" }
+kotlinxSerializationJson = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
+ktorClientAndroid = { module = "io.ktor:ktor-client-android", version.ref = "ktorVersion" }
+ktorClientCore = { module = "io.ktor:ktor-client-core", version.ref = "ktorVersion" }
+ktorClientLogging = { module = "io.ktor:ktor-client-logging", version.ref = "ktorVersion" }
+ktorClientSerializationJvm = { module = "io.ktor:ktor-client-serialization-jvm", version.ref = "ktorVersion" }
+navigationCompose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
+retrofit2KotlinxSerializationConverter = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version.ref = "retrofit2-kotlinx-serialization-converter" }
+roomKtx = { module = "androidx.room:room-ktx", version.ref = "roomVersion" }
+roomCompiler = { module = "androidx.room:room-compiler", version.ref = "roomVersion" }
+roomRuntime = { module = "androidx.room:room-runtime", version.ref = "roomVersion" }
+
+[plugins]
+androidApplication = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin"}
+composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "kspVersion"}
+kotlinSerialization = {id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinSerializationVersion"}
