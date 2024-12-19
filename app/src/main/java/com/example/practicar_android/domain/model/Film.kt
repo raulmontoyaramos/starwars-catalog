@@ -1,11 +1,13 @@
 package com.example.practicar_android.domain.model
 
+import java.time.Instant
+
 data class Film(
     val id: String,
     val characters: List<String>,
-    val created: String,
+    val created: Instant,
     val director: String,
-    val edited: String,
+    val edited: Instant,
     val episodeId: Int,
     val openingCrawl: String,
     val planets: List<String>,

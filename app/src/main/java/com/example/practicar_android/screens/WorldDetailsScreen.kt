@@ -168,7 +168,7 @@ fun WorldDetails(
                 )
             )
             Text(
-                text = world.created,
+                text = world.created.toString(),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(
@@ -176,7 +176,7 @@ fun WorldDetails(
                 )
             )
             Text(
-                text = world.edited,
+                text = world.edited.toString(),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(

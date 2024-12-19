@@ -28,7 +28,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -42,6 +41,7 @@ import com.example.practicar_android.domain.model.Character
 import com.example.practicar_android.domain.model.Film
 import com.example.practicar_android.domain.model.World
 import com.example.practicar_android.ui.theme.PracticarAndroidTheme
+import java.time.Instant
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -365,8 +365,8 @@ private fun CharacterDetailsPreview() {
                 character = Character(
                     id = "2",
                     birthYear = "19BBY",
-                    created = "2",
-                    edited = "2",
+                    created = Instant.MIN,
+                    edited = Instant.MIN,
                     eyeColor = "Blue",
                     films = listOf("2", ""),
                     gender = "Male",
@@ -384,9 +384,9 @@ private fun CharacterDetailsPreview() {
                 world = World(
                     id = "1",
                     climate = "2",
-                    created = ": String",
+                    created = Instant.MIN,
                     diameter = "10.465",
-                    edited = "String",
+                    edited = Instant.MIN,
                     films = listOf("dwf", "fdsf"),
                     gravity = "String",
                     name = "Tatooine",
@@ -402,9 +402,9 @@ private fun CharacterDetailsPreview() {
                     Film(
                         id = "1",
                         characters = listOf("Luke Skywalker", "Darth Vader"),
-                        created = "2024-10-27",
+                        created = Instant.MIN,
                         director = "George Lucas",
-                        edited = "2024-10-27",
+                        edited = Instant.MIN,
                         episodeId = 4,
                         openingCrawl = "A long time ago in a galaxy far, far away...",
                         planets = listOf("Tatooine", "Yavin IV"),
@@ -419,9 +419,9 @@ private fun CharacterDetailsPreview() {
                     Film(
                         id = "2",
                         characters = listOf("Luke Skywalker", "Leia Organa"),
-                        created = "2024-10-27",
+                        created = Instant.MIN,
                         director = "Irvin Kershner",
-                        edited = "2024-10-27",
+                        edited = Instant.MIN,
                         episodeId = 4,
                         openingCrawl = "It is a dark time for the Rebellion...",
                         planets = listOf("Hoth", "Dagobah"),

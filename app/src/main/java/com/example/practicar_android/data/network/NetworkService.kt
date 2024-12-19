@@ -20,6 +20,7 @@ import io.ktor.client.request.header
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import kotlinx.serialization.json.Json
+import java.time.Instant
 
 private const val TIME_OUT = 6000
 
@@ -63,16 +64,17 @@ interface NetworkService {
             }
 
             override suspend fun getCharacters(): List<Character> {
+                println("NetworkCharacter getCharacters")
                 val result: NetworkCharacters =
-                    client.get<NetworkCharacters>("https://swapi.dev/api/people/")
+                    client.get<NetworkCharacters>("https://swapi.py4e.com/api/people/")
 
                 return result.results.map {
-
+                    println("NetworkCharacter = $it")
                     Character(
                         id = it.url.extractIdFromUrl(),
                         birthYear = it.birthYear,
-                        created = it.created,
-                        edited = it.edited,
+                        created = Instant.parse(it.created),
+                        edited = Instant.parse(it.edited),
                         eyeColor = it.eyeColor,
                         films = it.films,
                         gender = it.gender,
@@ -92,13 +94,13 @@ interface NetworkService {
 
             override suspend fun getCharacter(characterId: String): Character {
                 val result: NetworkCharacter =
-                    client.get<NetworkCharacter>("https://swapi.dev/api/people/$characterId/")
+                    client.get<NetworkCharacter>("https://swapi.py4e.com/api/people/$characterId/")
 
                 return Character(
                     id = result.url.extractIdFromUrl(),
                     birthYear = result.birthYear,
-                    created = result.created,
-                    edited = result.edited,
+                    created = Instant.parse(result.created),
+                    edited = Instant.parse(result.edited),
                     eyeColor = result.eyeColor,
                     films = result.films,
                     gender = result.gender,
@@ -117,7 +119,7 @@ interface NetworkService {
 
             override suspend fun getWorld(worldId: String): World {
                 val result: NetworkPlanet =
-                    client.get<NetworkPlanet>("https://swapi.dev/api/planets/$worldId/")
+                    client.get<NetworkPlanet>("https://swapi.py4e.com/api/planets/$worldId/")
 
                 return World(
                     id = result.url.extractIdFromUrl(),
@@ -132,22 +134,22 @@ interface NetworkService {
                     population = result.population,
                     residents = result.residents,
                     films = result.films,
-                    created = result.created,
-                    edited = result.edited,
+                    created = Instant.parse(result.created),
+                    edited = Instant.parse(result.edited),
                     url = result.url
                 )
             }
 
             override suspend fun getFilm(filmId: String): Film {
                 val result: NetworkFilm =
-                    client.get<NetworkFilm>("https://swapi.dev/api/films/$filmId/")
+                    client.get<NetworkFilm>("https://swapi.py4e.com/api/films/$filmId/")
 
                 return Film(
                     id = result.url.extractIdFromUrl(),
                     characters = result.characters,
-                    created = result.created,
+                    created = Instant.parse(result.created),
                     director = result.director,
-                    edited = result.edited,
+                    edited = Instant.parse(result.edited),
                     episodeId = result.episodeId,
                     openingCrawl = result.openingCrawl,
                     planets = result.planets,

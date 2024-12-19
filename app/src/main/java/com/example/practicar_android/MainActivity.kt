@@ -21,6 +21,8 @@ import com.example.practicar_android.data.network.NetworkService
 import com.example.practicar_android.data.network.model.CharacterRepository
 import com.example.practicar_android.data.network.model.FilmRepository
 import com.example.practicar_android.data.network.model.WorldRepository
+import com.example.practicar_android.domain.model.StarWarsDatabase
+import com.example.practicar_android.data.room.repository.OfflineCharactersRepository
 import com.example.practicar_android.screens.CharacterDetailsScreen
 import com.example.practicar_android.screens.CharacterDetailsViewModel
 import com.example.practicar_android.screens.CharacterListScreen
@@ -37,6 +39,10 @@ class MainActivity : ComponentActivity() {
     private val characterRepository = CharacterRepository()
     private val worldRepository = WorldRepository()
     private val filmRepository = FilmRepository()
+
+    private val database by lazy { StarWarsDatabase.getDatabase(this) }
+    private val offlineCharactersRepository by lazy { OfflineCharactersRepository(database.characterDao()) }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,13 +65,13 @@ class MainActivity : ComponentActivity() {
                                         CharacterListViewModel(
                                             navController = navController,
                                             networkService = networkService,
-                                            characterRepository = characterRepository
+                                            characterRepository = characterRepository,
+                                            charactersRepository = offlineCharactersRepository
                                         )
                                     })
                                 CharacterListScreen(
                                     viewModel
                                 )
-                                     navController.popBackStack()
                             }
                             composable<CharacterDetails> {
                                 val characterId = it.toRoute<CharacterDetails>().characterId

@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.practicar_android.domain.model.Character
 import com.example.practicar_android.ui.theme.PracticarAndroidTheme
+import java.time.Instant
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -162,8 +163,8 @@ private fun CharacterListScreenPreview() {
                 Character(
                     id = "2",
                     birthYear = "2004",
-                    created = "2",
-                    edited = "2",
+                    created = Instant.MIN,
+                    edited = Instant.MIN,
                     eyeColor = "Blue",
                     films = listOf("2", ""),
                     gender = "Male",

@@ -1,11 +1,13 @@
 package com.example.practicar_android.domain.model
 
+import java.time.Instant
+
 data class World(
     val id: String,
     val climate: String,
-    val created: String,
+    val created: Instant,
     val diameter: String,
-    val edited: String,
+    val edited: Instant,
     val films: List<String>,
     val gravity: String,
     val name: String,

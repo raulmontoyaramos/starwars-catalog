@@ -45,9 +45,9 @@ data class NetworkCharacter(
     @SerialName("starships")
     val starships: List<String>,
     @SerialName("created")
-    val created: String,
+    val created: String?,
     @SerialName("edited")
-    val edited: String,
+    val edited: String?,
     @SerialName("url")
     val url: String
 )
