@@ -3,8 +3,8 @@ package com.example.practicar_android.screens
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import com.example.practicar_android.data.network.model.FilmRepository
 import com.example.practicar_android.domain.model.Film
+import com.example.practicar_android.domain.model.repositories.FilmsRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -14,7 +14,7 @@ import kotlinx.coroutines.withContext
 class FilmDetailsViewModel (
     private val navController: NavController,
     private val filmId: String,
-    private val filmRepository: FilmRepository
+    private val filmsRepository: FilmsRepository
 ) : ViewModel() {
 
     val viewState = MutableStateFlow(
@@ -30,10 +30,14 @@ class FilmDetailsViewModel (
     private fun fetchFilm() {
         viewModelScope.launch {
             try {
-                val film: Film? = withContext(Dispatchers.IO){
-                    println("Films in repository: ${filmRepository.films.value}")
-                    filmRepository.getFilmById(filmId)
+                val film = withContext(Dispatchers.IO){
+                    filmsRepository.getFilm(filmId)
                 }
+
+//                val film: Film? = withContext(Dispatchers.IO){
+//                    println("Films in repository: ${filmRepository.films.value}")
+//                    filmRepository.getFilmById(filmId)
+//                }
                 println("FilmDetailsViewModel - Film = $film")
                 viewState.update {
                     it.copy(

@@ -6,19 +6,22 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.practicar_android.data.room.dao.CharacterDao
+import com.example.practicar_android.data.room.dao.FilmDao
 import com.example.practicar_android.data.room.entity.CharacterEntity
+import com.example.practicar_android.data.room.entity.FilmEntity
 import com.example.practicar_android.domain.model.util.InstantConverter
 import com.example.practicar_android.domain.model.util.ListConverter
 
 @Database(
-    entities = [CharacterEntity::class],
-    version = 2,
+    entities = [CharacterEntity::class, FilmEntity::class],
+    version = 3,
     exportSchema = false
 )
 @TypeConverters(ListConverter::class, InstantConverter::class)
 abstract class StarWarsDatabase : RoomDatabase() {
 
     abstract fun characterDao(): CharacterDao
+    abstract fun filmDao(): FilmDao
 
     companion object {
         @Volatile

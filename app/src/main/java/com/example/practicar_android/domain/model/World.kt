@@ -4,18 +4,18 @@ import java.time.Instant
 
 data class World(
     val id: String,
-    val climate: String,
-    val created: Instant,
-    val diameter: String,
-    val edited: Instant,
-    val films: List<String>,
-    val gravity: String,
     val name: String,
+    val rotationPeriod: String,
     val orbitalPeriod: String,
+    val diameter: String,
+    val climate: String,
+    val gravity: String,
+    val terrain: String,
+    val surfaceWater: String,
     val population: String,
     val residents: List<String>,
-    val rotationPeriod: String,
-    val surfaceWater: String,
-    val terrain: String,
+    val films: List<String>,
+    val created: Instant,
+    val edited: Instant,
     val url: String
 )

@@ -7,11 +7,11 @@ import com.example.practicar_android.FilmDetails
 import com.example.practicar_android.WorldDetails
 import com.example.practicar_android.data.network.NetworkService
 import com.example.practicar_android.data.network.model.CharacterRepository
-import com.example.practicar_android.data.network.model.FilmRepository
 import com.example.practicar_android.data.network.model.WorldRepository
 import com.example.practicar_android.domain.model.Character
 import com.example.practicar_android.domain.model.Film
 import com.example.practicar_android.domain.model.World
+import com.example.practicar_android.domain.model.repositories.FilmsRepository
 import com.example.practicar_android.domain.model.util.extractIdFromUrl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,7 +25,7 @@ class CharacterDetailsViewModel(
     characterId: String,
     private val characterRepository: CharacterRepository,
     private val worldRepository: WorldRepository,
-    private val filmRepository: FilmRepository
+    private val filmsRepository: FilmsRepository
 ) : ViewModel() {
 
     val viewState = MutableStateFlow(
@@ -37,6 +37,13 @@ class CharacterDetailsViewModel(
     )
 
     init {
+        viewModelScope.launch {
+            filmsRepository.getAllFilms().collect { films ->
+                viewState.update {
+                    it.copy(films = films)
+                }
+            }
+        }
         fetchCharacter(characterId)
     }
 
@@ -71,14 +78,15 @@ class CharacterDetailsViewModel(
         viewModelScope.launch {
             try {
                 val film = withContext(Dispatchers.IO) {
-                    networkService.getFilm(filmId).also { filmRepository.setFilm(it) }
+                    networkService.getFilm(filmId).also { apiFilm ->
+                        filmsRepository.insertFilm(apiFilm) }
                 }
                 println("CharacterDetailsViewModel - fetchFilm - Film = $film")
-                viewState.update {
-                    it.copy(
-                        films = it.films + film
-                    )
-                }
+//                viewState.update {
+//                    it.copy(
+//                        films = it.films + film
+//                    )
+//                }
             } catch(exception: Exception){
                 println("CharacterDetailsViewModel - Film = Error Loading Film ${exception.message}")
             }
