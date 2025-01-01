@@ -1,7 +1,6 @@
 package com.example.practicar_android.data.room.repository
 
 import com.example.practicar_android.data.room.dao.FilmDao
-import com.example.practicar_android.domain.model.Character
 import com.example.practicar_android.domain.model.Film
 import com.example.practicar_android.domain.model.repositories.FilmsRepository
 import com.example.practicar_android.domain.model.toDatabase

@@ -7,11 +7,11 @@ import com.example.practicar_android.FilmDetails
 import com.example.practicar_android.WorldDetails
 import com.example.practicar_android.data.network.NetworkService
 import com.example.practicar_android.data.network.model.CharacterRepository
-import com.example.practicar_android.data.network.model.WorldRepository
 import com.example.practicar_android.domain.model.Character
 import com.example.practicar_android.domain.model.Film
 import com.example.practicar_android.domain.model.World
 import com.example.practicar_android.domain.model.repositories.FilmsRepository
+import com.example.practicar_android.domain.model.repositories.WorldsRepository
 import com.example.practicar_android.domain.model.util.extractIdFromUrl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,8 +24,8 @@ class CharacterDetailsViewModel(
     private val navController: NavController,
     characterId: String,
     private val characterRepository: CharacterRepository,
-    private val worldRepository: WorldRepository,
-    private val filmsRepository: FilmsRepository
+    private val filmsRepository: FilmsRepository,
+    private val worldsRepository: WorldsRepository
 ) : ViewModel() {
 
     val viewState = MutableStateFlow(
@@ -97,7 +97,8 @@ class CharacterDetailsViewModel(
         viewModelScope.launch {
             try {
                 val world = withContext(Dispatchers.IO) {
-                    networkService.getWorld(worldId).also { worldRepository.setWorld(it) }
+                    networkService.getWorld(worldId).also { apiWorld ->
+                        worldsRepository.insertWorld(apiWorld) }
                 }
                 println("CharacterDetailsViewModel - World = $world")
                 viewState.update {

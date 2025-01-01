@@ -1,5 +1,6 @@
 package com.example.practicar_android.domain.model
 
+import com.example.practicar_android.data.room.entity.WorldEntity
 import java.time.Instant
 
 data class World(
@@ -19,3 +20,42 @@ data class World(
     val edited: Instant,
     val url: String
 )
+
+fun World.toDatabase() =
+    WorldEntity(
+        worldId = id,
+        name = name,
+        rotationPeriod = rotationPeriod,
+        orbitalPeriod = orbitalPeriod,
+        diameter = diameter,
+        climate = climate,
+        gravity = gravity,
+        terrain = terrain,
+        surfaceWater = surfaceWater,
+        population = population,
+        residents = residents,
+        films = films,
+        created = created,
+        edited = edited,
+        url = url
+)
+
+fun WorldEntity.toDomain() =
+    World(
+        id = worldId,
+        name = name,
+        rotationPeriod = rotationPeriod,
+        orbitalPeriod = orbitalPeriod,
+        diameter = diameter,
+        climate = climate,
+        gravity = gravity,
+        terrain = terrain,
+        surfaceWater = surfaceWater,
+        population = population,
+        residents = residents,
+        films = films,
+        created = created,
+        edited = edited,
+        url = url
+    )
+

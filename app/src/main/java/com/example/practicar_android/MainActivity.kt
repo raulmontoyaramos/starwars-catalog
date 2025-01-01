@@ -19,10 +19,10 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.practicar_android.data.network.NetworkService
 import com.example.practicar_android.data.network.model.CharacterRepository
-import com.example.practicar_android.data.network.model.WorldRepository
 import com.example.practicar_android.domain.model.StarWarsDatabase
 import com.example.practicar_android.data.room.repository.OfflineCharactersRepository
 import com.example.practicar_android.data.room.repository.OfflineFilmsRepository
+import com.example.practicar_android.data.room.repository.OfflineWorldsRepository
 import com.example.practicar_android.screens.CharacterDetailsScreen
 import com.example.practicar_android.screens.CharacterDetailsViewModel
 import com.example.practicar_android.screens.CharacterListScreen
@@ -37,12 +37,11 @@ class MainActivity : ComponentActivity() {
 
     private val networkService = NetworkService()
     private val characterRepository = CharacterRepository()
-    private val worldRepository = WorldRepository()
 
     private val database by lazy { StarWarsDatabase.getDatabase(this) }
     private val offlineCharactersRepository by lazy { OfflineCharactersRepository(database.characterDao()) }
     private val offlineFilmsRepository by lazy { OfflineFilmsRepository(database.filmDao()) }
-
+    private val offlineWorldsRepository by lazy { OfflineWorldsRepository(database.worldDao())}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,10 +81,10 @@ class MainActivity : ComponentActivity() {
                                         CharacterDetailsViewModel(
                                             navController = navController,
                                             networkService = networkService,
-                                            worldRepository = worldRepository,
                                             characterRepository = characterRepository,
                                             characterId = characterId,
-                                            filmsRepository = offlineFilmsRepository
+                                            filmsRepository = offlineFilmsRepository,
+                                            worldsRepository = offlineWorldsRepository
                                         )
                                     })
                                 CharacterDetailsScreen(
@@ -100,8 +99,8 @@ class MainActivity : ComponentActivity() {
                                     viewModel<WorldDetailsViewModel>(factory = viewModelFactory {
                                         WorldDetailsViewModel(
                                             navController = navController,
-                                            worldRepository = worldRepository,
-                                            worldId = worldId
+                                            worldId = worldId,
+                                            worldsRepository = offlineWorldsRepository
                                         )
                                     })
                                 WorldDetailsScreen(

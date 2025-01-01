@@ -3,8 +3,8 @@ package com.example.practicar_android.screens
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import com.example.practicar_android.data.network.model.WorldRepository
 import com.example.practicar_android.domain.model.World
+import com.example.practicar_android.domain.model.repositories.WorldsRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -13,8 +13,8 @@ import kotlinx.coroutines.withContext
 
 class WorldDetailsViewModel(
     private val navController: NavController,
-    private val worldId: String,
-    private val worldRepository: WorldRepository
+    worldId: String,
+    private val worldsRepository: WorldsRepository
 ) : ViewModel() {
 
     val viewState = MutableStateFlow(
@@ -24,15 +24,14 @@ class WorldDetailsViewModel(
     )
 
     init {
-        fetchWorld()
+        fetchWorld(worldId)
     }
 
-    private fun fetchWorld() {
+    private fun fetchWorld(worldId: String) {
         viewModelScope.launch {
             try {
                 val world: World? = withContext(Dispatchers.IO){
-                    println("Worlds in repository: ${worldRepository.worlds.value}")
-                    worldRepository.getWorldById(worldId)
+                    worldsRepository.getWorld(worldId)
                 }
                 println("WorldDetailsViewModel - WorldDetails = $world")
                 viewState.update {
