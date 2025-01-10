@@ -43,20 +43,20 @@ android {
     buildFeatures {
         compose = true
     }
+
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.15"
     }
-
-//    composeCompiler {
-//        reportsDestination = layout.buildDirectory.dir("compose_compiler")
-//        stabilityConfigurationFile = rootProject.layout.projectDirectory.file("stability_config.conf")
-//    }
 
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+}
+
+ksp {
+    arg("dagger.ignoreProvisionKeyWildcards", "ENABLED")
 }
 
 dependencies {
@@ -89,6 +89,10 @@ dependencies {
     implementation(libs.roomRuntime)
     ksp(libs.roomCompiler)
     implementation(libs.roomKtx)
+
+    //Dagger
+    implementation(libs.dagger)
+    ksp(libs.daggerCompiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.extJunit)

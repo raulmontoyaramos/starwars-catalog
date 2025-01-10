@@ -9,16 +9,17 @@ import com.example.practicar_android.data.network.model.CharacterRepository
 import com.example.practicar_android.domain.model.Character
 import com.example.practicar_android.data.room.entity.CharacterEntity
 import com.example.practicar_android.domain.model.repositories.CharactersRepository
+import com.example.practicar_android.viewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class CharacterListViewModel(
+class CharacterListViewModel (
     private val networkService: NetworkService,
     private val navController: NavController,
-    private val characterRepository: CharacterRepository,
     private val charactersRepository: CharactersRepository
 ) : ViewModel() {
 
@@ -70,3 +71,18 @@ class CharacterListViewModel(
 data class CharacterListViewState(
     val characters: List<Character>
 )
+
+class CharacterListViewModelFactory(
+    private val networkService: NetworkService,
+    private val charactersRepository: CharactersRepository
+) {
+    internal fun create(
+        navController: NavController,
+        ) = viewModelFactory {
+        CharacterListViewModel(
+            networkService = networkService,
+            navController = navController,
+            charactersRepository = charactersRepository
+        )
+    }
+}

@@ -23,28 +23,37 @@ import com.example.practicar_android.domain.model.StarWarsDatabase
 import com.example.practicar_android.data.room.repository.OfflineCharactersRepository
 import com.example.practicar_android.data.room.repository.OfflineFilmsRepository
 import com.example.practicar_android.data.room.repository.OfflineWorldsRepository
+import com.example.practicar_android.di.AppComponent
 import com.example.practicar_android.screens.CharacterDetailsScreen
 import com.example.practicar_android.screens.CharacterDetailsViewModel
+import com.example.practicar_android.screens.CharacterDetailsViewModelFactory
 import com.example.practicar_android.screens.CharacterListScreen
 import com.example.practicar_android.screens.CharacterListViewModel
+import com.example.practicar_android.screens.CharacterListViewModelFactory
 import com.example.practicar_android.screens.FilmDetailsScreen
 import com.example.practicar_android.screens.FilmDetailsViewModel
+import com.example.practicar_android.screens.FilmDetailsViewModelFactory
 import com.example.practicar_android.screens.WorldDetailsScreen
 import com.example.practicar_android.screens.WorldDetailsViewModel
+import com.example.practicar_android.screens.WorldDetailsViewModelFactory
 import com.example.practicar_android.ui.theme.PracticarAndroidTheme
+import javax.inject.Inject
 
 class MainActivity : ComponentActivity() {
 
-    private val networkService = NetworkService()
-    private val characterRepository = CharacterRepository()
-
-    private val database by lazy { StarWarsDatabase.getDatabase(this) }
-    private val offlineCharactersRepository by lazy { OfflineCharactersRepository(database.characterDao()) }
-    private val offlineFilmsRepository by lazy { OfflineFilmsRepository(database.filmDao()) }
-    private val offlineWorldsRepository by lazy { OfflineWorldsRepository(database.worldDao())}
+    @Inject
+    lateinit var characterListViewModelFactory: CharacterListViewModelFactory
+    @Inject
+    lateinit var characterDetailsViewModelFactory: CharacterDetailsViewModelFactory
+    @Inject
+    lateinit var filmDetailsViewModelFactory: FilmDetailsViewModelFactory
+    @Inject
+    lateinit var worldDetailsViewModelFactory: WorldDetailsViewModelFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val appComponent = (application as StarWarsApplication).appComponent
+        appComponent.inject(this)
         setContent {
             PracticarAndroidTheme {
                 Surface(
@@ -60,49 +69,39 @@ class MainActivity : ComponentActivity() {
                         ) {
                             composable<CharacterList> {
                                 val viewModel =
-                                    viewModel<CharacterListViewModel>(factory = viewModelFactory {
-                                        CharacterListViewModel(
-                                            navController = navController,
-                                            networkService = networkService,
-                                            characterRepository = characterRepository,
-                                            charactersRepository = offlineCharactersRepository
+                                    viewModel<CharacterListViewModel>(
+                                        factory = characterListViewModelFactory.create(
+                                            navController = navController
                                         )
-                                    })
+                                    )
                                 CharacterListScreen(
                                     viewModel
                                 )
                             }
                             composable<CharacterDetails> {
                                 val characterId = it.toRoute<CharacterDetails>().characterId
-
                                 println("CharacterDetails - characterId = $characterId")
-                                val viewModel: CharacterDetailsViewModel =
-                                    viewModel<CharacterDetailsViewModel>(factory = viewModelFactory {
-                                        CharacterDetailsViewModel(
+
+                                val viewModel =
+                                    viewModel<CharacterDetailsViewModel>(
+                                        factory = characterDetailsViewModelFactory.create(
                                             navController = navController,
-                                            networkService = networkService,
-                                            characterRepository = characterRepository,
                                             characterId = characterId,
-                                            filmsRepository = offlineFilmsRepository,
-                                            worldsRepository = offlineWorldsRepository
-                                        )
-                                    })
+                                        ) )
                                 CharacterDetailsScreen(
                                     viewModel
                                 )
                             }
                             composable<WorldDetails> {
                                 val worldId = it.toRoute<WorldDetails>().worldId
-
                                 println("WorldDetails - worldId = $worldId")
-                                val viewModel: WorldDetailsViewModel =
-                                    viewModel<WorldDetailsViewModel>(factory = viewModelFactory {
-                                        WorldDetailsViewModel(
+
+                                val viewModel =
+                                    viewModel<WorldDetailsViewModel>(
+                                        factory = worldDetailsViewModelFactory.create(
                                             navController = navController,
-                                            worldId = worldId,
-                                            worldsRepository = offlineWorldsRepository
-                                        )
-                                    })
+                                            worldId = worldId
+                                        ))
                                 WorldDetailsScreen(
                                     viewModel
                                 )
@@ -111,14 +110,12 @@ class MainActivity : ComponentActivity() {
                                 val filmId = it.toRoute<FilmDetails>().filmId
 
                                 println("FilmDetails - filmId = $filmId")
-                                val viewModel: FilmDetailsViewModel =
-                                    viewModel<FilmDetailsViewModel>(factory = viewModelFactory {
-                                        FilmDetailsViewModel(
+                                val viewModel =
+                                    viewModel<FilmDetailsViewModel>(
+                                        factory = filmDetailsViewModelFactory.create(
                                             navController = navController,
-                                            filmId = filmId,
-                                            filmsRepository = offlineFilmsRepository
-                                        )
-                                    })
+                                            filmId = filmId
+                                        ) )
                                 FilmDetailsScreen(
                                     viewModel
                                 )
@@ -132,13 +129,15 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Suppress("UNCHECKED_CAST")
-fun <VM : ViewModel> viewModelFactory(createViewModel: () -> VM)
-        : ViewModelProvider.Factory {
+//@Suppress("UNCHECKED_CAST")
+//fun <VM : ViewModel> viewModelFactory(createViewModel: () -> VM)
+//        : ViewModelProvider.Factory = object : ViewModelProvider.Factory {
+//    override fun <T : ViewModel> create(modelClass: Class<T>): T = createViewModel() as T
+//}
 
+fun viewModelFactory(create: () -> ViewModel): ViewModelProvider.Factory {
     return object : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return createViewModel() as T
-        }
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T = create() as T
     }
 }

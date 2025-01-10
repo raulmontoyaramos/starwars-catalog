@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.example.practicar_android.domain.model.World
 import com.example.practicar_android.domain.model.repositories.WorldsRepository
+import com.example.practicar_android.viewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -30,7 +31,7 @@ class WorldDetailsViewModel(
     private fun fetchWorld(worldId: String) {
         viewModelScope.launch {
             try {
-                val world: World? = withContext(Dispatchers.IO){
+                val world: World? = withContext(Dispatchers.IO) {
                     worldsRepository.getWorld(worldId)
                 }
                 println("WorldDetailsViewModel - WorldDetails = $world")
@@ -52,3 +53,18 @@ class WorldDetailsViewModel(
 data class WorldDetailsViewState(
     val world: World?
 )
+
+class WorldDetailsViewModelFactory(
+    private val worldsRepository: WorldsRepository
+) {
+    internal fun create(
+        navController: NavController,
+        worldId: String,
+    ) = viewModelFactory {
+        WorldDetailsViewModel(
+            worldsRepository = worldsRepository,
+            navController = navController,
+            worldId = worldId
+        )
+    }
+}

@@ -2,6 +2,7 @@
 activity-compose = "1.9.3"
 androidGradlePlugin = "8.7.2"
 androidx-junit = "1.2.1"
+daggerVersion = "2.48.1"
 kspVersion = "2.0.21-1.0.27"
 espressoCore = "3.6.1"
 junit = "4.13.2"
@@ -18,11 +19,12 @@ retrofit2-kotlinx-serialization-converter = "1.0.0"
 roomVersion = "2.6.1"
 
 
-
 [libraries]
 activityCompose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
 androidxKtx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
 androidxLifecycleRuntimeKtx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
+daggerCompiler = { module = "com.google.dagger:dagger-compiler", version.ref = "daggerVersion" }
+dagger = { module = "com.google.dagger:dagger", version.ref = "daggerVersion" }
 espressoCore = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCore" }
 extJunit = { module = "androidx.test.ext:junit", version.ref = "androidx-junit" }
 junit = { module = "junit:junit", version.ref = "junit" }

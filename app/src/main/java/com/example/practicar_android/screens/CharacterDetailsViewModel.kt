@@ -13,6 +13,7 @@ import com.example.practicar_android.domain.model.World
 import com.example.practicar_android.domain.model.repositories.FilmsRepository
 import com.example.practicar_android.domain.model.repositories.WorldsRepository
 import com.example.practicar_android.domain.model.util.extractIdFromUrl
+import com.example.practicar_android.viewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -130,3 +131,25 @@ data class CharacterDetailsViewState(
     val world: World?,
     val films: List<Film>
 )
+
+class CharacterDetailsViewModelFactory(
+    private val networkService: NetworkService,
+    private val filmsRepository: FilmsRepository,
+    private val worldsRepository: WorldsRepository,
+    private val characterRepository: CharacterRepository,
+
+    ) {
+    internal fun create(
+        navController: NavController,
+        characterId: String,
+    ) = viewModelFactory {
+        CharacterDetailsViewModel(
+            networkService = networkService,
+            filmsRepository = filmsRepository,
+            worldsRepository = worldsRepository,
+            navController = navController,
+            characterId = characterId,
+            characterRepository = characterRepository
+        )
+    }
+}

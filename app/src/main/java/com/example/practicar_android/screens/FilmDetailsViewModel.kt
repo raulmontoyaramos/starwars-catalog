@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.example.practicar_android.domain.model.Film
 import com.example.practicar_android.domain.model.repositories.FilmsRepository
+import com.example.practicar_android.viewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -57,3 +58,18 @@ class FilmDetailsViewModel (
 data class FilmDetailsViewState(
     val film: Film?
 )
+
+class FilmDetailsViewModelFactory(
+    private val filmsRepository: FilmsRepository
+) {
+    internal fun create(
+        navController: NavController,
+        filmId: String,
+    ) = viewModelFactory {
+        FilmDetailsViewModel(
+            filmsRepository = filmsRepository,
+            navController = navController,
+            filmId = filmId
+        )
+    }
+}
